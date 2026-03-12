@@ -49,8 +49,9 @@ export function CTASection({ accentColor, bgColor }: CTASectionProps) {
           {"Elige tu sabor favorito, pide tu pack y descubre por qu\u00e9 nadie vuelve a las patatas de siempre. Tu yo del futuro te lo agradecer\u00e1."}
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <button
+        <div className="mt-10 flex justify-center">
+          <a
+            href="#contacto"
             className="btn-ripple group flex items-center gap-2 rounded-full px-10 py-4 text-base font-bold tracking-wide transition-all duration-300 hover:scale-105"
             style={{
               backgroundColor: accentColor,
@@ -58,26 +59,31 @@ export function CTASection({ accentColor, bgColor }: CTASectionProps) {
               boxShadow: `0 8px 40px ${accentColor}35`,
             }}
           >
-            Comprar ahora
+            Contactar
             <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
-          <button className="flex items-center gap-2 rounded-full border border-foreground/15 px-10 py-4 text-base font-medium text-foreground/80 transition-all duration-300 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground">
-            {"Pack degustaci\u00f3n"}
-          </button>
+          </a>
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-foreground/30">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           {[
-            "Env\u00edo en 24h",
-            "Devoluci\u00f3n garantizada",
-            "Pago seguro",
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <div
+            "100% Natural",
+            "Sin gluten",
+            "Hecho en Espa\u00f1a",
+          ].map((badge) => (
+            <div
+              key={badge}
+              className="flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium transition-all duration-700"
+              style={{
+                borderColor: `${accentColor}30`,
+                backgroundColor: `${accentColor}08`,
+                color: accentColor,
+              }}
+            >
+              <span
                 className="h-1 w-1 rounded-full"
                 style={{ backgroundColor: accentColor }}
               />
-              <span>{item}</span>
+              {badge}
             </div>
           ))}
         </div>

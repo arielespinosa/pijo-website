@@ -1,7 +1,7 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
-import { ChevronLeft, ChevronRight, Truck } from "lucide-react"
+import { useCallback, useEffect, useRef, useState, memo } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export interface Product {
   id: number
@@ -14,9 +14,6 @@ export interface Product {
   accentColor: string
   textColor: string
   weight: string
-  intensity: number
-  crunch: number
-  flavor: number
 }
 
 interface ProductSliderProps {
@@ -24,6 +21,35 @@ interface ProductSliderProps {
   activeIndex: number
   onIndexChange: (index: number) => void
 }
+
+// Memoized product image component for better performance
+const ProductImage = memo(function ProductImage({
+  product,
+  isActive,
+  slot,
+  isMobile,
+}: {
+  product: Product
+  isActive: boolean
+  slot: number
+  isMobile: boolean
+}) {
+  return (
+    <img
+      src={product.image}
+      alt={`PIJO ${product.name} - Patatas fritas gourmet`}
+      className="relative z-10 h-auto w-[75vw] max-w-[320px] object-contain sm:w-[70vw] sm:max-w-[380px] md:max-w-[400px] lg:w-80 lg:max-w-none"
+      loading={slot === 0 || slot === 1 ? "eager" : "lazy"}
+      decoding="async"
+      style={{
+        filter: isActive
+          ? `drop-shadow(0 0 60px ${product.accentColor}50) drop-shadow(0 30px 60px ${product.accentColor}30) drop-shadow(0 15px 30px rgba(0,0,0,0.3))`
+          : `drop-shadow(0 15px 30px rgba(0,0,0,0.4))`,
+        transition: "filter 0.8s ease",
+      }}
+    />
+  )
+})
 
 export function ProductSlider({ products, activeIndex, onIndexChange }: ProductSliderProps) {
   const [isAnimating, setIsAnimating] = useState(false)
@@ -115,9 +141,19 @@ export function ProductSlider({ products, activeIndex, onIndexChange }: ProductS
     return diff
   }
 
+  // Check if we're on mobile (will be updated via useEffect)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   // Slot-based style presets for the carousel items
   const getSlotStyle = (slot: number): React.CSSProperties => {
-    // Active product: large, left-aligned
+    // Active product: large, centered on mobile, left-aligned on desktop
     if (slot === 0) {
       return {
         transform: "translate(0%, -50%) scale(1) rotate(0deg)",
@@ -127,7 +163,17 @@ export function ProductSlider({ products, activeIndex, onIndexChange }: ProductS
         pointerEvents: "auto" as const,
       }
     }
-    // Cascade positions 1, 2, 3
+    // On mobile, hide all non-active products
+    if (isMobile) {
+      return {
+        transform: "translate(0%, -50%) scale(0.8) rotate(0deg)",
+        opacity: 0,
+        zIndex: 0,
+        filter: "blur(4px) brightness(0.6)",
+        pointerEvents: "none" as const,
+      }
+    }
+    // Cascade positions 1, 2, 3 (desktop only)
     if (slot >= 1 && slot <= 3) {
       const cascadeX = slot * 120
       const cascadeY = slot * -35
@@ -194,10 +240,7 @@ export function ProductSlider({ products, activeIndex, onIndexChange }: ProductS
           `,
         }}
       />
-      <div
-        className="animate-pulse-glow pointer-events-none absolute bottom-0 left-0 right-0 h-px transition-all duration-1000"
-        style={{ backgroundColor: `${product.accentColor}60` }}
-      />
+
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl flex-col items-center justify-center gap-8 px-6 lg:flex-row lg:gap-0 lg:px-8">
         {/* Left side - Text content */}
@@ -244,71 +287,44 @@ export function ProductSlider({ products, activeIndex, onIndexChange }: ProductS
             {product.description}
           </p>
 
+          {/* Product highlights */}
           <div
-            className="animate-fade-in-up flex flex-col items-center gap-3 sm:flex-row lg:items-start"
-            style={{ animationDelay: "0.35s", animationFillMode: "both" }}
-          >
-            <button
-              className="btn-ripple group flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105"
-              style={{
-                backgroundColor: product.accentColor,
-                color: "#080810",
-                boxShadow: `0 8px 40px ${product.accentColor}35`,
-              }}
-            >
-              Quiero probarlas
-              <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
-            <button className="group flex items-center gap-2 rounded-full border border-foreground/15 px-8 py-4 text-sm font-medium text-foreground/80 transition-all duration-300 hover:border-foreground/30 hover:bg-foreground/5 hover:text-foreground">
-              Descubrir sabores
-            </button>
-          </div>
-
-          {/* Intensity bars */}
-          <div
-            className="animate-fade-in-up mt-4 flex items-center gap-8"
+            className="animate-fade-in-up mt-6 flex flex-wrap items-center justify-center gap-2 lg:mt-8 lg:justify-start lg:gap-3"
             style={{ animationDelay: "0.45s", animationFillMode: "both" }}
           >
             {[
-              { label: "Intensidad", value: product.intensity },
-              { label: "Crujido", value: product.crunch },
-              { label: "Sabor", value: product.flavor },
-            ].map((stat) => (
-              <div key={stat.label} className="flex flex-col gap-1.5">
-                <span className="text-[11px] font-medium tracking-wider uppercase text-foreground/40">{stat.label}</span>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((bar) => (
-                    <div
-                      key={bar}
-                      className="h-1.5 w-4 rounded-full transition-all duration-700"
-                      style={{
-                        backgroundColor: bar <= stat.value ? product.accentColor : "rgba(255,255,255,0.08)",
-                        opacity: bar <= stat.value ? 1 : 0.5,
-                      }}
-                    />
-                  ))}
-                </div>
+              "100% Natural",
+              "Sin gluten",
+              "Hecho en Espa\u00f1a",
+            ].map((badge) => (
+              <div
+                key={badge}
+                className="flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[10px] font-medium transition-all duration-700 sm:gap-2 sm:px-4 sm:py-2 sm:text-xs"
+                style={{
+                  borderColor: `${product.accentColor}30`,
+                  backgroundColor: `${product.accentColor}08`,
+                  color: product.accentColor,
+                }}
+              >
+                <span
+                  className="h-1 w-1 rounded-full"
+                  style={{ backgroundColor: product.accentColor }}
+                />
+                {badge}
               </div>
             ))}
-          </div>
-
-          <div
-            className="animate-fade-in-up flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-2 text-xs text-foreground/50"
-            style={{ animationDelay: "0.55s", animationFillMode: "both" }}
-          >
-            <Truck className="h-3.5 w-3.5 transition-colors duration-700" style={{ color: product.accentColor }} />
-            <span>{"Env\u00edo en 24h a toda Espa\u00f1a"}</span>
           </div>
         </div>
 
         {/* Right side - Diagonal cascade with CSS transitions (all bags rendered) */}
         <div className="relative flex flex-1 items-center justify-center lg:justify-end">
-          <div className="relative h-[500px] w-full max-w-[650px] sm:h-[550px] md:h-[600px]">
-            {/* Animated glow behind active product */}
+          <div className="relative h-[400px] w-full max-w-[650px] sm:h-[500px] md:h-[550px] lg:h-[600px]">
+            {/* Animated circular glow behind active product */}
             <div
-              className="pointer-events-none absolute left-0 top-1/2 z-[5] h-[500px] w-[500px] -translate-x-[10%] -translate-y-1/2 transition-all duration-[1200ms]"
+              className="pointer-events-none absolute left-[15%] top-1/2 z-[5] h-[450px] w-[450px] -translate-y-1/2 rounded-full transition-all duration-[1200ms]"
               style={{
-                background: `radial-gradient(circle, ${product.accentColor}30 0%, ${product.bgColor}15 40%, transparent 70%)`,
+                background: `radial-gradient(circle at center, ${product.accentColor}25 0%, ${product.accentColor}10 35%, transparent 70%)`,
+                filter: "blur(40px)",
               }}
             />
 
@@ -321,7 +337,7 @@ export function ProductSlider({ products, activeIndex, onIndexChange }: ProductS
               return (
                 <div
                   key={p.id}
-                  className="absolute left-0 top-1/2 will-change-transform"
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 will-change-transform lg:left-0 lg:translate-x-0"
                   style={{
                     ...slotStyle,
                     transition: `
@@ -341,22 +357,13 @@ export function ProductSlider({ products, activeIndex, onIndexChange }: ProductS
                   tabIndex={slot >= 1 && slot <= 3 ? 0 : undefined}
                   aria-label={slot >= 1 && slot <= 3 ? `Ir a ${p.name}` : undefined}
                 >
-                  {/* Per-product glow (only visible on active) */}
-                  <div
-                    className="pointer-events-none absolute inset-0 transition-opacity duration-[1200ms]"
-                    style={{
-                      background: `radial-gradient(circle, ${p.accentColor}35 0%, transparent 70%)`,
-                      transform: "scale(2)",
-                      opacity: isActive ? 1 : 0,
-                    }}
-                  />
                   <img
                     src={p.image}
                     alt={`PIJO ${p.name}`}
-                    className="relative z-10 h-auto w-56 object-contain sm:w-64 md:w-72 lg:w-80"
+                    className="relative z-10 h-auto w-[75vw] max-w-[320px] object-contain sm:w-[70vw] sm:max-w-[380px] md:max-w-[400px] lg:w-80 lg:max-w-none"
                     style={{
                       filter: isActive
-                        ? `drop-shadow(0 30px 80px ${p.accentColor}40)`
+                        ? `drop-shadow(0 0 60px ${p.accentColor}50) drop-shadow(0 30px 60px ${p.accentColor}30) drop-shadow(0 15px 30px rgba(0,0,0,0.3))`
                         : `drop-shadow(0 15px 30px rgba(0,0,0,0.4))`,
                       transition: "filter 0.8s ease",
                     }}

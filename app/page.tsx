@@ -20,14 +20,11 @@ const products: Product[] = [
       "El sabor de siempre, el que nunca falla. La patata frita cl\u00e1sica con el toque Pijo que la convierte en algo \u00fanico. Sin artificios, solo excelencia.",
     tagline: "La patata de toda la vida",
     image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/pijo%20normal-sQgJMuQkxCQZS4L9dzN4N1m8hoc4La.png",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Dise%C3%B1o_sin_t%C3%ADtulo__5_-removebg-preview-m78yoZ6bJmDqBC1HhFgj6goqd1bztS.png",
     bgColor: "#e8e0d4",
     accentColor: "#8a7d6b",
     textColor: "#1a1a1a",
     weight: "130g",
-    intensity: 3,
-    crunch: 5,
-    flavor: 3,
   },
   {
     id: 2,
@@ -42,9 +39,6 @@ const products: Product[] = [
     accentColor: "#d4b944",
     textColor: "#ffffff",
     weight: "130g",
-    intensity: 4,
-    crunch: 4,
-    flavor: 5,
   },
   {
     id: 3,
@@ -59,9 +53,6 @@ const products: Product[] = [
     accentColor: "#e0e0e0",
     textColor: "#ffffff",
     weight: "130g",
-    intensity: 5,
-    crunch: 4,
-    flavor: 5,
   },
   {
     id: 4,
@@ -76,9 +67,6 @@ const products: Product[] = [
     accentColor: "#3dc5c5",
     textColor: "#ffffff",
     weight: "130g",
-    intensity: 4,
-    crunch: 4,
-    flavor: 4,
   },
   {
     id: 5,
@@ -93,9 +81,6 @@ const products: Product[] = [
     accentColor: "#b84878",
     textColor: "#ffffff",
     weight: "130g",
-    intensity: 5,
-    crunch: 4,
-    flavor: 5,
   },
   {
     id: 6,
@@ -105,31 +90,67 @@ const products: Product[] = [
       "500 gramos de pura sofisticaci\u00f3n. Corte medio, textura impecable y un packaging que impone. La bolsa que se lleva a las reuniones importantes.",
     tagline: "La sofisticaci\u00f3n tiene nombre",
     image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/patatas%20elegant-zwYUontJz6g85lvEHTKrKgXufYO2D2.png",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Dise%C3%B1o_sin_t%C3%ADtulo__6_-removebg-preview-U9UMIJWdH2eykd5V44n25JvHTUuAKG.png",
     bgColor: "#1c1c1c",
     accentColor: "#c0c0c0",
     textColor: "#ffffff",
     weight: "500g",
-    intensity: 4,
-    crunch: 5,
-    flavor: 4,
   },
   {
     id: 7,
-    name: "Elegant Jam\u00f3n",
+    name: "Elegant Ham",
     subtitle: "Superior quality Spanish ham",
     description:
       "El sabor del mejor jam\u00f3n espa\u00f1ol en cada patata. Una alianza entre la tradici\u00f3n ib\u00e9rica y el crujido perfecto que eleva cualquier momento.",
-    tagline: "El jam\u00f3n hecho patata",
+    tagline: "Jam\u00f3n espa\u00f1ol premium",
     image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/patatas%20elegant%20jamon-Na7lGh8tITU9LowwCCCAbDawzRQwdK.png",
-    bgColor: "#8a7040",
-    accentColor: "#d4a85a",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Dise%C3%B1o_sin_t%C3%ADtulo__7_-removebg-preview-ckiR2hv9rB3rfBJUVkZFA3ZWBPCvQ5.png",
+    bgColor: "#d4c8b8",
+    accentColor: "#8a7d6b",
+    textColor: "#1a1a1a",
+    weight: "130g",
+  },
+  {
+    id: 8,
+    name: "Elegant Classic",
+    subtitle: "From Spain \u00b7 The original",
+    description:
+      "La esencia de la patata frita en su m\u00e1xima expresi\u00f3n. Sin artificios, solo el sabor aut\u00e9ntico que conquista paladares en todo el mundo.",
+    tagline: "El cl\u00e1sico que trasciende fronteras",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Dise%C3%B1o_sin_t%C3%ADtulo__1_-removebg-preview-wyr5pg0Yrg7ko51paiI3o5Dep40j1K.png",
+    bgColor: "#f5f5f0",
+    accentColor: "#3a3a3a",
+    textColor: "#1a1a1a",
+    weight: "130g",
+  },
+  {
+    id: 9,
+    name: "Elegant Lemon Pepper",
+    subtitle: "From Spain \u00b7 Lemon and pepper",
+    description:
+      "La frescura del lim\u00f3n mediterr\u00e1neo y el toque picante de la pimienta negra en una combinaci\u00f3n irresistible para paladares exigentes.",
+    tagline: "Frescura y car\u00e1cter",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Dise%C3%B1o_sin_t%C3%ADtulo__2_-removebg-preview-ulg1r0JaLyOSJrAQmRqg6QGbt5O3u3.png",
+    bgColor: "#1c1c1c",
+    accentColor: "#d4b944",
     textColor: "#ffffff",
     weight: "130g",
-    intensity: 4,
-    crunch: 4,
-    flavor: 5,
+  },
+  {
+    id: 10,
+    name: "Elegant Black Olive",
+    subtitle: "From Spain \u00b7 Black olive",
+    description:
+      "La intensidad de la aceituna negra espa\u00f1ola en cada bocado. Un sabor mediterr\u00e1neo que evoca los olivares de Andaluc\u00eda.",
+    tagline: "El sabor del Mediterr\u00e1neo",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Dise%C3%B1o_sin_t%C3%ADtulo__3_-removebg-preview-0JRy3zw06PMY7Zd3vx5TlwanBQQWfx.png",
+    bgColor: "#5a2040",
+    accentColor: "#c87090",
+    textColor: "#ffffff",
+    weight: "130g",
   },
 ]
 
@@ -251,10 +272,7 @@ export default function PijoPage() {
           bgColor={currentProduct.bgColor}
         />
 
-        <BrandStory
-          accentColor={currentProduct.accentColor}
-          product={currentProduct}
-        />
+        <BrandStory accentColor={currentProduct.accentColor} />
 
         <PressSection accentColor={currentProduct.accentColor} />
 

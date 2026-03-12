@@ -6,10 +6,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  swcMinify: false, // Desactiva SWC minifier
-  compiler: {
-    removeConsole: false, // Evita procesos adicionales
-  },
 }
 
 export default nextConfig
